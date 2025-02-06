@@ -1,0 +1,18 @@
+<Project>
+    <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+    <PropertyGroup>
+      <TargetFramework>net8.0</TargetFramework>
+      <LangVersion>latest</LangVersion>
+  
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+  
+      <AspireVersion>9.0.0</AspireVersion>
+      <CommunityToolkitAspireVersion>9.1.0</CommunityToolkitAspireVersion>
+      <AspNetCoreVersion>8.0.7</AspNetCoreVersion>
+      <OpenTelemetryVersion>1.9.0</OpenTelemetryVersion>
+  
+      <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  </Project>
+  

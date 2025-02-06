@@ -1,0 +1,60 @@
+openapi: 3.0.1
+info:
+  title: Data API builder - Graphql Endpoint
+  version: 0.12.0
+servers:
+  - url: "http://localhost:5000/"
+paths:
+  /graphql:
+    post:
+      description: a graphql endpoint.
+      operationId: dab_post
+      parameters:
+        - name: X-MS-API-ROLE
+          in: header
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/graphqlrequest'
+        required: true
+      responses:
+        '400':
+          description: BadRequest
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: NotFound
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                properties:
+                  value:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/graphqlresponse'
+        '409':
+          description: Conflict
+components:
+  schemas:
+    graphqlrequest:
+      type: object
+      properties:
+        query:
+          type: string
+          format: ''
+    graphqlresponse:
+      type: object
+      properties:
+        data:
+          type: object

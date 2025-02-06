@@ -1,0 +1,33 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@assw0rd!
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - ../src/DBChat.AppHost/sql-server:/usr/config
+      - ./:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -h -1 -t 1 -U sa -P P@assw0rd! -C -Q 'SET NOCOUNT ON; Select SUM(state) from [dbo].[Offerings]'"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+    command: >
+      bash -c '
+      /usr/config/entrypoint.sh
+      '
+  dab:
+    image: mcr.microsoft.com/azure-databases/data-api-builder:latest
+    environment:
+      - ConnectionStrings__Agency=Server=host.docker.internal,1433;User ID=sa;Password=P@assw0rd!;TrustServerCertificate=true;Database=Agency
+    ports:
+      - 5000:5000
+    volumes:
+      - ../dab/dab-config.json:/App/dab-config.json
+    depends_on:
+      sqlserver:
+        condition: service_healthy
